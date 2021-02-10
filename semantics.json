@@ -52,6 +52,13 @@
     "description": "With autoplay the audio starts to play immediately. If autoplay is disabled the user presses a play button to start the audio."
   },
   {
+    "name": "autoplayDelay",
+    "type": "number",
+    "label": "Autoplay Delay",
+    "description": "Delay (in seconds) before the audio starts to play immediately.",
+    "optional": true
+  },
+  {
     "name": "playAudio",
     "type": "text",
     "importance": "low",

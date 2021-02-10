@@ -32,7 +32,8 @@ H5P.Audio = (function ($) {
       autoplay: false,
       audioNotSupported: "Your browser does not support this audio",
       playAudio: "Play audio",
-      pauseAudio: "Pause audio"
+      pauseAudio: "Pause audio",
+      autoplayDeplay: 0
     }, params);
 
     this.on('resize', this.resize, this);
@@ -303,12 +304,14 @@ H5P.Audio.prototype.stop = function () {
  * Play
  */
 H5P.Audio.prototype.play = function () {
-  if (this.flowplayer !== undefined) {
-    this.flowplayer.play();
-  }
-  if (this.audio !== undefined) {
-    this.audio.play();
-  }
+  this.autoPlayTimeout = setTimeout(() => {
+    if (this.flowplayer !== undefined) {
+      this.flowplayer.play();
+    }
+    if (this.audio !== undefined) {
+      this.audio.play();
+    }
+  }, this.params.autoplayDelay * 1000);
 };
 
 /**
@@ -316,6 +319,7 @@ H5P.Audio.prototype.play = function () {
  * Pauses the audio.
  */
 H5P.Audio.prototype.pause = function () {
+  clearTimeout(this.autoPlayTimeout);
   if (this.audio !== undefined) {
     this.audio.pause();
   }
