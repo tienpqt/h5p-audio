@@ -59,6 +59,21 @@
     "optional": true
   },
   {
+    "name": "controlsList",
+    "type": "text",
+    "importance": "low",
+    "label": "Audio Control List",
+    "default": "nofullscreen nodownload noremoteplayback",
+    "optional": true
+  },
+  {
+    "name": "tries",
+    "type": "number",
+    "label": "Maximum tries",
+    "description": "Will limit the number of times the audio can be played.",
+    "optional": true
+  },
+  {
     "name": "playAudio",
     "type": "text",
     "importance": "low",

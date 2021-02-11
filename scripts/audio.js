@@ -23,6 +23,8 @@ H5P.Audio = (function ($) {
     // Retrieve previous state
     if (extras && extras.previousState !== undefined) {
       this.oldTime = extras.previousState.currentTime;
+      if (extras.previousState.triesLeft !== undefined)
+        this.triesLeft = extras.previousState.triesLeft;
     }
 
     this.params = $.extend({}, {
@@ -33,8 +35,12 @@ H5P.Audio = (function ($) {
       audioNotSupported: "Your browser does not support this audio",
       playAudio: "Play audio",
       pauseAudio: "Pause audio",
-      autoplayDeplay: 0
+      autoplayDeplay: 0,
+      tries: Infinity
     }, params);
+
+    if (this.triesLeft === undefined || this.triesLeft === null)
+      this.triesLeft = this.params.tries;
 
     this.on('resize', this.resize, this);
   }
@@ -192,7 +198,7 @@ H5P.Audio.prototype.attach = function ($wrapper) {
   }
 
   audio.className = 'h5p-audio';
-  audio.controls = this.params.controls === undefined ? true : this.params.controls;
+  audio.controls = (this.params.controls === undefined ? true : this.params.controls) && this.triesLeft >= 1;
   audio.preload = 'auto';
   audio.style.display = 'block';
 
@@ -203,6 +209,14 @@ H5P.Audio.prototype.attach = function ($wrapper) {
       audio.style.height = '100%';
     }
   }
+
+  audio.addEventListener('play', () => {
+    this.triesLeft--;
+  });
+
+  audio.addEventListener('ended', () => {
+    this.triesLeft < 1 && this.disableAudio();
+  });
 
   this.audio = audio;
 
@@ -216,6 +230,7 @@ H5P.Audio.prototype.attach = function ($wrapper) {
   }
   else {
     audio.autoplay = this.params.autoplay === undefined ? false : this.params.autoplay;
+    audio.controlsList = this.params.controlsList;
     $wrapper.html(audio);
   }
 
@@ -304,6 +319,8 @@ H5P.Audio.prototype.stop = function () {
  * Play
  */
 H5P.Audio.prototype.play = function () {
+  if (this.triesLeft < 1) return;
+
   this.autoPlayTimeout = setTimeout(() => {
     if (this.flowplayer !== undefined) {
       this.flowplayer.play();
@@ -347,7 +364,8 @@ H5P.Audio.prototype.getCurrentState = function () {
   if (this.audio !== undefined) {
     const currentTime = this.audio.ended ? 0 : this.audio.currentTime;
     return {
-      currentTime: currentTime
+      currentTime: currentTime,
+      triesLeft : this.triesLeft
     };
   }
 };
@@ -385,6 +403,11 @@ H5P.Audio.prototype.enableToggleButton = function () {
 H5P.Audio.prototype.isEnabledToggleButton = function () {
   return this.toggleButtonEnabled;
 };
+
+H5P.Audio.prototype.disableAudio = function () {
+  if (this.audio !== undefined) 
+    this.audio.controls = false;
+}
 
 /** @constant {string} */
 H5P.Audio.BUTTON_DISABLED = 'h5p-audio-disabled';
