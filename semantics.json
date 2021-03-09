@@ -7,6 +7,13 @@
     "disableCopyright": true
   },
   {
+    "name": "transcript",
+    "type": "text",
+    "label": "Audio transcript",
+    "default": "No transcript", 
+    "description": "The transcript text displayed to the student."
+  },
+  {
     "name": "playerMode",
     "type": "select",
     "importance": "low",

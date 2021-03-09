@@ -110,3 +110,30 @@
 .h5p-audio-inner.h5p-audio-transparent .h5p-audio-minimal-pause:before {
   content: none;
 }
+
+.h5p-transcriptcard {
+  width: 400px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 4px #ccc;
+  border-bottom: 3mm ridge rgb(38, 170, 68, .6);
+}
+.h5p-transcriptcard .transcript-text {
+  width: auto;
+  margin: 16px;
+  font-family: fantasy;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 24px;
+  text-align: center;
+}
+.h5p-transcriptcard .transcript-head {
+  width: auto;
+  margin: 16px;
+  font-family: fantasy;
+  color:  #32a1ce;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 24px;
+  text-align: left;
+}

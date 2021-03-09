@@ -28,6 +28,7 @@ H5P.Audio = (function ($) {
     }
 
     this.params = $.extend({}, {
+      transcript: 'audio transcript',
       playerMode: 'minimalistic',
       fitToWrapper: false,
       controls: true,
@@ -164,6 +165,17 @@ H5P.Audio = (function ($) {
  */
 H5P.Audio.prototype.attach = function ($wrapper) {
   $wrapper.addClass('h5p-audio-wrapper');
+ 
+  // Add transcript card
+  //$wrapper.addClass('h5p-transcriptcard');
+
+  $wrapper.addClass('h5p-transcriptcard');
+  $wrapper.html(
+    `<div class="h5p-transcriptcard">
+    <div class="transcript-head">Audio transcript</div>
+    <div class="transcript-text">${this.params.transcript}  </div></div>`
+  );
+
 
   // Check if browser supports audio.
   var audio = document.createElement('audio');
@@ -234,6 +246,7 @@ H5P.Audio.prototype.attach = function ($wrapper) {
     $wrapper.html(audio);
   }
 
+  
   // Set time to saved time from previous run
   if (this.oldTime) {
     this.seekTo(this.oldTime);
@@ -255,7 +268,8 @@ H5P.Audio.prototype.attachFlash = function ($wrapper) {
       }
     }
   }
-
+   
+  
   if (audioSource === undefined) {
     $wrapper.addClass('h5p-audio-not-supported');
     $wrapper.html(
